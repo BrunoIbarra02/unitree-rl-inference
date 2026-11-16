@@ -1,0 +1,27 @@
+{
+  "go2": {
+    "service": "go2",
+    "n_requests": 3000,
+    "n_errors": 0,
+    "duration_s": 61.375,
+    "throughput_rps": 48.88,
+    "http_e2e_ms": {
+      "mean": 315.122,
+      "p50": 235.348,
+      "p95": 1218.267,
+      "p99": 1569.238,
+      "max": 3243.948
+    },
+    "server_inference_ms": {
+      "mean": 0.67,
+      "p50": 0.524,
+      "p95": 1.669,
+      "p99": 2.166,
+      "max": 5.168
+    },
+    "cloudwatch": {
+      "CPUUtilization": [],
+      "MemoryUtilization": []
+    }
+  }
+}

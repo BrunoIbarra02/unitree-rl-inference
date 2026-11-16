@@ -1,0 +1,44 @@
+{
+  "go2": {
+    "service": "go2",
+    "n_requests": 750,
+    "n_errors": 0,
+    "duration_s": 15.102,
+    "throughput_rps": 49.66,
+    "http_e2e_ms": {
+      "mean": 138.201,
+      "p50": 119.057,
+      "p95": 225.776,
+      "p99": 599.906,
+      "max": 1488.038
+    },
+    "server_inference_ms": {
+      "mean": 0.553,
+      "p50": 0.514,
+      "p95": 0.65,
+      "p99": 1.726,
+      "max": 1.994
+    }
+  },
+  "g1": {
+    "service": "g1",
+    "n_requests": 750,
+    "n_errors": 0,
+    "duration_s": 15.412,
+    "throughput_rps": 48.66,
+    "http_e2e_ms": {
+      "mean": 144.472,
+      "p50": 109.027,
+      "p95": 441.547,
+      "p99": 608.129,
+      "max": 1477.676
+    },
+    "server_inference_ms": {
+      "mean": 0.643,
+      "p50": 0.491,
+      "p95": 1.432,
+      "p99": 2.74,
+      "max": 10.931
+    }
+  }
+}

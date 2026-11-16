@@ -1,0 +1,52 @@
+{
+  "g1": {
+    "service": "g1",
+    "n_requests": 3000,
+    "n_errors": 0,
+    "duration_s": 61.14,
+    "throughput_rps": 49.07,
+    "http_e2e_ms": {
+      "mean": 341.378,
+      "p50": 245.798,
+      "p95": 1233.09,
+      "p99": 1670.383,
+      "max": 5298.484
+    },
+    "server_inference_ms": {
+      "mean": 0.699,
+      "p50": 0.508,
+      "p95": 1.46,
+      "p99": 2.538,
+      "max": 38.424
+    },
+    "cloudwatch": {
+      "CPUUtilization": [],
+      "MemoryUtilization": []
+    }
+  },
+  "go2": {
+    "service": "go2",
+    "n_requests": 3000,
+    "n_errors": 0,
+    "duration_s": 61.817,
+    "throughput_rps": 48.53,
+    "http_e2e_ms": {
+      "mean": 331.571,
+      "p50": 244.134,
+      "p95": 1216.898,
+      "p99": 1607.346,
+      "max": 5282.782
+    },
+    "server_inference_ms": {
+      "mean": 0.656,
+      "p50": 0.519,
+      "p95": 1.631,
+      "p99": 2.13,
+      "max": 3.612
+    },
+    "cloudwatch": {
+      "CPUUtilization": [],
+      "MemoryUtilization": []
+    }
+  }
+}

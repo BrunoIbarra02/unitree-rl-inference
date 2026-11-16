@@ -1,0 +1,27 @@
+{
+  "g1": {
+    "service": "g1",
+    "n_requests": 3000,
+    "n_errors": 50,
+    "duration_s": 62.016,
+    "throughput_rps": 48.37,
+    "http_e2e_ms": {
+      "mean": 780.176,
+      "p50": 265.565,
+      "p95": 1437.802,
+      "p99": 14302.437,
+      "max": 20091.05
+    },
+    "server_inference_ms": {
+      "mean": 3.818,
+      "p50": 1.091,
+      "p95": 14.04,
+      "p99": 36.255,
+      "max": 126.084
+    },
+    "cloudwatch": {
+      "CPUUtilization": [],
+      "MemoryUtilization": []
+    }
+  }
+}
