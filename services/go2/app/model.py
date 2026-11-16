@@ -75,6 +75,10 @@ JOINT_NAMES = [
 SESSION_TTL_S = 600.0
 
 
+class NonFiniteOutputError(ValueError):
+    """Raised when the policy returns NaN/Inf."""
+
+
 @dataclass
 class SessionState:
     history: torch.Tensor
@@ -129,6 +133,14 @@ class Go2Policy:
                 out = self._model(x)
                 new_history = self._model.history.clone()
         latency_ms = (time.perf_counter() - t0) * 1000.0
+
+        # A NaN/Inf here would crash JSON serialization of the response
+        # (ValueError: Out of range float values are not JSON compliant) and,
+        # if stored, would poison this session's history for every later call.
+        if not (torch.isfinite(out).all().item() and torch.isfinite(new_history).all().item()):
+            with self._sessions_lock:
+                self._sessions.pop(session_id, None)
+            raise NonFiniteOutputError("model produced a non-finite output; session was reset")
 
         with self._sessions_lock:
             state.history = new_history

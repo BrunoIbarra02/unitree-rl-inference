@@ -72,6 +72,10 @@ JOINT_NAMES = [
 SESSION_TTL_S = 600.0
 
 
+class NonFiniteOutputError(ValueError):
+    """Raised when the policy returns NaN/Inf."""
+
+
 @dataclass
 class SessionState:
     hidden_state: torch.Tensor
@@ -136,6 +140,14 @@ class G1Policy:
                 new_hidden = self._model.hidden_state.clone()
                 new_cell = self._model.cell_state.clone()
         latency_ms = (time.perf_counter() - t0) * 1000.0
+
+        # A NaN/Inf would crash JSON serialization of the response and, if stored,
+        # would poison this session's LSTM state for every later call.
+        if not (torch.isfinite(out).all().item() and torch.isfinite(new_hidden).all().item()
+                and torch.isfinite(new_cell).all().item()):
+            with self._sessions_lock:
+                self._sessions.pop(session_id, None)
+            raise NonFiniteOutputError("model produced a non-finite output; session was reset")
 
         with self._sessions_lock:
             state.hidden_state = new_hidden
