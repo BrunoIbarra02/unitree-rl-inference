@@ -1,6 +1,8 @@
 import logging
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from .model import ACTION_DIM, CHECKPOINT_ID, CHECKPOINT_SHA256, JOINT_NAMES, OBS_DIM, Go2Policy, NonFiniteOutputError
 from .schemas import MetadataResponse, PredictRequest, PredictResponse
@@ -11,6 +13,13 @@ logger = logging.getLogger("go2-service")
 app = FastAPI(title="Unitree Go2 Locomotion Inference")
 
 _policy: Go2Policy | None = None
+
+
+@app.exception_handler(RequestValidationError)
+async def _validation_error(_request: Request, exc: RequestValidationError):
+    # Default handler echoes the offending input; a NaN/Inf in it cannot be JSON-encoded and turns a 422 into a 500.
+    errors = [{"loc": list(e.get("loc", [])), "msg": str(e.get("msg", ""))} for e in exc.errors()]
+    return JSONResponse(status_code=422, content={"detail": errors})
 
 
 @app.on_event("startup")
