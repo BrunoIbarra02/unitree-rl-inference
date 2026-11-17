@@ -2,7 +2,7 @@ import logging
 
 from fastapi import FastAPI, HTTPException
 
-from .model import ACTION_DIM, CHECKPOINT_ID, CHECKPOINT_SHA256, JOINT_NAMES, OBS_DIM, Go2Policy
+from .model import ACTION_DIM, CHECKPOINT_ID, CHECKPOINT_SHA256, JOINT_NAMES, OBS_DIM, Go2Policy, NonFiniteOutputError
 from .schemas import MetadataResponse, PredictRequest, PredictResponse
 
 logging.basicConfig(level=logging.INFO)
@@ -65,6 +65,9 @@ def predict(req: PredictRequest):
     assert _policy is not None
     try:
         actions, latency_ms, session_id, was_reset = _policy.predict(req.observation, req.session_id)
+    except NonFiniteOutputError as e:
+        logger.warning("non-finite policy output: %s", e)
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:  # noqa: BLE001
         logger.exception("inference failed")
         raise HTTPException(status_code=500, detail=f"inference failed: {e}")
